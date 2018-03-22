@@ -109,7 +109,25 @@ window.onload = function () {
         }
         //Sphere 球状布局
         function Sphere() {
+            let arr = [1,3,8,9,11,14,21,15,12,10,9,7,4,1],
+                arrLength = arr.length,
+                xDeg = 180/(arrLength-1);
+            for(let i=0;i<length;i++){
+                //求出当前i处于第几层 第几个
+                let numC = 0,numG = 0;//层数，个数
+                let arrSum = 0;
+                for(let j=0;j<arrLength;j++){
+                    arrSum += arr[j];
+                    if(arrSum>i){
+                        numC = j;
+                        numG = i-(arrSum-arr[j]);
+                        break;
+                    }
+                }
 
+                let yDeg = 360/arr[numC];
+                aLi[i].style.transform = `rotateY(${(numG+1.3)*yDeg}deg) rotateX(${90-numC*xDeg}deg) translateZ(${800}px)`;
+            }
         }
         //Grid层叠式布局
         function Grid() {

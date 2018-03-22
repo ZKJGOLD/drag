@@ -3,23 +3,35 @@ window.onload = function () {
         let length = 5*5*5;
         let oUl = document.getElementById("list").children[0];
         let aLi = oUl.children;
-        for(let i=0;i<length;i++){
-            let oLi = document.createElement("li");
-            //建立坐标系
-            oLi.x = i%5;//x坐标
-            oLi.y = Math.floor(i%25/5);//y坐标
-            oLi.z = Math.floor(i/25);//z坐标
-            oLi.innerHTML = `x:${oLi.x} y:${oLi.y} z:${oLi.z}`;
-            oUl.appendChild(oLi);
-        }
 
-        Grid();
+
+        //初始化
+        (function () {
+            for(let i=0;i<length;i++){
+                let oLi = document.createElement("li");
+                //建立坐标系
+                oLi.x = i%5;//x坐标
+                oLi.y = Math.floor(i%25/5);//y坐标
+                oLi.z = Math.floor(i/25);//z坐标
+                oLi.innerHTML = `x:${oLi.x} y:${oLi.y} z:${oLi.z}`;
+
+                let tX = Math.random()*5000-3000,
+                    tY = Math.random()*5000-3000,
+                    tZ = Math.random()*5000-3000;
+                oLi.style.transform = `translate3D(${tX}px,${tY}px,${tZ}px)`;
+                oUl.appendChild(oLi);
+            }
+            setTimeout(Grid,1000);
+        })();
+
+
 
         //拖拽滚轮事件的添加
         (function () {
             let roX = 0,
                 roY = 0,
-                trZ = -1500;
+                trZ = -1500,
+                timerMouse = null;
 
             document.onselectstart = function (e) {
                 return false;
@@ -28,21 +40,36 @@ window.onload = function () {
                 return false;
             };
             document.onmousedown = function (e) {
+                cancelAnimationFrame(timerMouse);
                 let sX = e.clientX,
                     sY = e.clientY,
-                    rY = roY,
-                    rX = roX;
+                    lastX = sX,
+                    lastY = sY,
+                    x_ = 0,
+                    y_ = 0;
                 this.onmousemove = function (e) {
-                    let chaX = e.clientX - sX,//得到鼠标x位移量
-                        chaY = e.clientY - sY;//得到鼠标y位移量
-                    rY = roY + chaX*0.15;//设置y度;
-                    rX = roX - chaY*0.15;//设置x度数
-                    oUl.style.transform = `translateZ(${trZ}px) rotateY(${rY}deg) rotateX(${rX}deg)`;
+                    x_ = e.clientX - lastX;
+                    y_ = e.clientY - lastY;
+
+                    roX -= y_*0.15;
+                    roY += x_*0.15;
+                    oUl.style.transform = `translateZ(${trZ}px) rotateY(${roY}deg) rotateX(${roX}deg)`;
+                    lastX = e.clientX;
+                    lastY = e.clientY;
+
                 };
                 this.onmouseup = function (e) {
-                    roX = rX;
-                    roY = rY;
                     this.onmousemove = null;
+                    function m() {
+                        x_ *= 0.9;
+                        y_ *= 0.9;
+                        roX -= y_*0.35;
+                        roY += x_*0.35;
+                        oUl.style.transform = `translateZ(${trZ}px) rotateY(${roY}deg) rotateX(${roX}deg)`;
+                        if(Math.abs(x_)<0.2 && Math.abs(y_)<0.2)return;
+                       timerMouse = requestAnimationFrame(m);
+                    }
+                    timerMouse = requestAnimationFrame(m);
                 }
             };
 
@@ -65,7 +92,26 @@ window.onload = function () {
              });
         })();
 
-        //Grid布局方式
+        //左下btn点击
+        (function () {
+            let aBtn = document.getElementById("btn").getElementsByTagName("li");
+            let arr = [Table,Sphere,Helix,Grid];
+            for(let i=0,length=aBtn.length;i<length;i++){
+                (function () {
+                    aBtn[i].onclick = arr[i];
+                })(i);
+            }
+        })();
+
+        //Table 元素周期表
+        function Table() {
+
+        }
+        //Sphere 球状布局
+        function Sphere() {
+
+        }
+        //Grid层叠式布局
         function Grid() {
             let disX = 300;//每一个li 水平（x）方向的间距
             let disY = 350;//每一个li 垂直（y）方向的间距
@@ -77,6 +123,18 @@ window.onload = function () {
                     y = (oLi.y - 2)*disY,
                     z = (oLi.z - 2)*disZ;
                 oLi.style.transform = `translate3D(${x}px,${y}px,${z}px)`;
+            }
+        }
+
+        //Helix螺旋式布局
+        function Helix() {
+            let h = 4;
+            let num = Math.round(length/h);
+            let deg = 360/num;
+            let mid = Math.floor(length/2);
+            let tY = 6;
+            for(let i=0;i<length;i++){
+                aLi[i].style.transform = `rotateY(${i*deg}deg) translateY(${(i-mid)*tY}px) translateZ(${900}px)`
             }
         }
     })();

@@ -17,7 +17,6 @@ body,html{
     left:50%;
     width: 120px;
     height: 160px;
-    border:1px solid #f00;
     transform-style:preserve-3d;
     margin-top:-80px;
     margin-left:-60px;
@@ -61,4 +60,86 @@ body,html{
 }
 #btn ul li:hover{
     background-color: rgba(127,255,255,.7);
+}
+#alert{
+    display: none;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    /*margin: 10%;  垂直方向百分比参照物为水平宽度*/
+    width: 80%;
+    height: 80%;
+    background: rgba(0,127,127,0.5);
+    border:1px solid rgba(127,255,255,0.25);
+    box-shadow: 0 0 12px rgba(0,255,255,0.5);
+    border-radius: 3px;
+    transform: rotateY(0deg) scale(2);
+    opacity: 1;
+    transform-style:preserve-3d;
+}
+#alert .title,#alert .img,#alert .info,#alert .author{
+    background: rgba(0,127,127,0.5);
+    border:1px solid rgba(127,255,255,0.25);
+    box-shadow: 0 0 12px rgba(0,255,255,0.5);
+    border-radius: 3px;
+}
+#alert .title{
+    position: absolute;
+    top: 15%;
+    left: 25%;
+    width: 50%;
+    height: 10%;
+}
+#alert .title span{
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    transform: translateY(-50%);
+}
+#alert .img{
+    overflow: hidden;;
+    position: absolute;
+    top: 35%;
+    left: 5%;
+    width: 45%;
+    height: 50%;
+}
+#alert.img img{
+    width: 100%;
+}
+#alert .author{
+    position: absolute;
+    top: 35%;
+    right: 5%;
+    width: 35%;
+    height: 5%;
+}
+#alert .author span{
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    transform: translateY(-50%);
+}
+#alert .info{
+    position: absolute;
+    top: 45%;
+    right: 5%;
+    width: 35%;
+    height: 40%;
+}
+#alert .info span{
+    position: absolute;
+    top: 5%;
+    padding: 15px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
 }

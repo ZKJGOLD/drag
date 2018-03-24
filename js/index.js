@@ -10,8 +10,13 @@ window.onload = function () {
                 //建立坐标系
                 oLi.x = i%5;//x坐标
                 oLi.y = Math.floor(i%25/5);//y坐标
-                oLi.z = Math.floor(i/25);//z坐标
-                oLi.innerHTML = `x:${oLi.x} y:${oLi.y} z:${oLi.z}`;
+                oLi.z = 4 - Math.floor(i/25);//z坐标
+                oLi.index = i;
+                let d = flyData[i] || flyData[0];
+                oLi.innerHTML = `<b class="liCover"></b>
+                    <p class="liTitle">${d.type}</p>
+                    <p class="liAuthor">${d.author}</p>
+                    <p class="liTime">${d.time}</p>`;
 
                 let tX = Math.random()*5000-3000,
                     tY = Math.random()*5000-3000,
@@ -24,20 +29,52 @@ window.onload = function () {
 
         //li的点击弹窗事件
         (function () {
-            let oAlert = document.getElementById("alert");
+            let oAlert = document.getElementById("alert"),
+                oFrame =document.getElementById("frame"),
+                oATitle = oAlert.getElementsByClassName("title")[0].getElementsByTagName("span")[0],
+                oAImg = oAlert.getElementsByClassName("img")[0].getElementsByTagName("img")[0],
+                oAAuthor = oAlert.getElementsByClassName("author")[0].getElementsByTagName("span")[0],
+                oAInfo = oAlert.getElementsByClassName("info")[0].getElementsByTagName("span")[0];
+            let oAll = document.getElementById("all");
+            let oBack = document.getElementById("back");
             oUl.onclick = function (e) {
                 let target = e.target;
-                if(/li/i.test(target.nodeName)){
-                    target.zkj = target.zkj?false:show();
+                if(/b/i.test(target.nodeName)){
+                    if(target.zkj){
+                        target.zkj = false;
+                    }else{
+                        if(oAlert.style.display === "block"){
+                            hide();
+                        }else{
+                            let index = target.parentNode.index;
+                            let d = flyData[index] || flyData[0];
+                            oAlert.index = index;
+                            oATitle.innerHTML = `课题：${d.title}`;
+                            oAImg.src = `src/${d.src}/index.png`;
+                            oAAuthor.innerHTML = `制作人： ${d.author}`;
+                            oAInfo.innerHTML = `描述：${d.dec}`;
+                            show();
+                        }
+                    }
                 }
                 e.stopPropagation();
             };
+            //弹出层点击切换页面
             oAlert.onclick = function (e) {
+                let d = flyData[this.index] || flyData[0];
+                oFrame.src = `src/${d.src}/index.html`;
+                oAll.className = "left";
                 e.stopPropagation();
             };
+            //弹出层消失触发
             document.onclick = function () {
                 hide();
             };
+            //返回主页面
+            oBack.onclick = function () {
+                oAll.className = "";
+            };
+
             function show() {
                 if(!oAlert.timer){
                     oAlert.timer = true;
@@ -108,10 +145,11 @@ window.onload = function () {
                     x_ = 0,
                     y_ = 0,
                     ifMove = false;
-                if(/li/i.test(e.target.nodeName)){
+                if(/b/i.test(e.target.nodeName)){
                     var thisLi = e.target;
                 }
                 this.onmousemove = function (e) {
+                    console.log(1);
                     ifMove = true;
                     x_ = e.clientX - lastX;
                     y_ = e.clientY - lastY;
@@ -124,7 +162,6 @@ window.onload = function () {
 
                 };
                 this.onmouseup = function (e) {
-                    console.log(thisLi);
                     if(ifMove && e.target === thisLi){
                         thisLi.zkj = true;
                     }

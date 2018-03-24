@@ -6,28 +6,37 @@
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-<div id="main">
-    <!--所有li模块-->
-    <div id="list">
-        <ul></ul>
+<div id="all">
+    <!--主屏显示-->
+    <div id="main">
+        <!--所有li模块-->
+        <div id="list">
+            <ul></ul>
+        </div>
+        <!--左下角按钮-->
+        <div id="btn">
+            <ul>
+                <li>Table</li>
+                <li>Sphere</li>
+                <li>Helix</li>
+                <li>Grid</li>
+            </ul>
+        </div>
+        <!--li点击后的弹出层-->
+        <div id="alert" class="before">
+            <div class="title"><span>课题：三维空间图片的拖拽</span></div>
+            <div class="img"><img src="img/yz.jpg" width="100%" height="100%"></div>
+            <div class="author"><span>制作人：朱克健</span></div>
+            <div class="info"><span>描述：这个毕设真的恐怖</span></div>
+        </div>
+        <!--返回按钮-->
+        <div id="back">back</div>
     </div>
-    <!--左下角按钮-->
-    <div id="btn">
-        <ul>
-            <li>Table</li>
-            <li>Sphere</li>
-            <li>Helix</li>
-            <li>Grid</li>
-        </ul>
-    </div>
-    <!--li点击后的弹出层-->
-    <div id="alert" class="before">
-        <div class="title"><span>课题：三维空间图片的拖拽</span></div>
-        <div class="img"><img src="img/yz.jpg" alt=""></div>
-        <div class="author"><span>制作人：朱克健</span></div>
-        <div class="info"><span>描述：这个毕设真的恐怖</span></div>
-    </div>
+
+    <!--框架展示-->
+    <iframe src="" id="frame" scrolling="no"></iframe>
 </div>
 <script src="js/index.js"></script>
+<script src="js/data.js"></script>
 </body>
 </html>
